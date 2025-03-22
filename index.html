@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        (function() {
+            // Get any path information
+            var path = window.location.pathname || '';
+            
+            // Detect platform
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            var isAndroid = /android/i.test(userAgent);
+            var isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+            
+            // Define store URLs
+            var androidURL = "https://play.google.com/store/apps/details?id=your.package.name";
+            var iosURL = "https://apps.apple.com/app/idYOURAPPID";
+            
+            // Add path parameters to store URLs if needed
+            // For example: androidURL += "&referrer=screen%3D" + encodeURIComponent(path.substring(1));
+            
+            // Redirect immediately
+            if (isAndroid) {
+                window.location.href = androidURL;
+            } else if (isIOS) {
+                window.location.href = iosURL;
+            } else {
+                window.location.href = androidURL; // Default
+            }
+        })();
+    </script>
+</head>
+<body>
+    Redirecting to app store...
+</body>
+</html>
