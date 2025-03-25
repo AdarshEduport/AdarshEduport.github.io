@@ -4,7 +4,7 @@
     "details": [
       {
         "appIDs": [
-          "FURTAQA59F.com.example-deeplink.tester"
+          "FURTAQA59F.app.eduport.app"
         ],
         "paths": [
           "*"
@@ -19,7 +19,7 @@
   },
   "webcredentials": {
     "apps": [
-      "FURTAQA59F.com.example-deeplink.tester"
+      "FURTAQA59F.app.eduport.app"
     ]
   }
 }
