@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPort LMS App Redirection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .redirect-message {
+            margin-top: 50px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-message" id="redirectMessage">
+        Redirecting to EduPort ...
+    </div>
+
+    <script>
+        // Redirect URL
+        const REDIRECT_URL = 'https://eduportlms.page.link/getapp';
+
+        // Redirect function
+        function redirectToApp() {
+            // Append current page's parameters to the redirect URL
+            const currentParams = new URLSearchParams(window.location.search);
+            const redirectWithParams = `${REDIRECT_URL}?${currentParams.toString()}`;
+
+            // Perform redirection
+            window.location.href = redirectWithParams;
+        }
+
+        // Execute redirection on page load
+        window.addEventListener('load', redirectToApp);
+    </script>
+</body>
+</html>
