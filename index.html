@@ -22,19 +22,69 @@
     <div class="redirect-message" id="redirectMessage">
         Redirecting to Eduport ...
     </div>
-
     <script>
-        // Redirect URL
-        const REDIRECT_URL = 'https://eduportlms.page.link/getapp';
+        // App store URLs
+        const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.eduport.app';
+        const APP_STORE_URL = 'https://apps.apple.com/app/eduport/id123456789';
+        const DEFAULT_REDIRECT_URL = 'https://eduportlms.page.link/getapp';
+
+        // Function to detect user's platform
+        function detectPlatform() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            if (/android/.test(userAgent)) {
+                return 'android';
+            } else if (/iphone|ipad|ipod/.test(userAgent)) {
+                return 'ios';
+            }
+            return 'unknown';
+        }
 
         // Redirect function
         function redirectToApp() {
-            // Append current page's parameters to the redirect URL
-            const currentParams = new URLSearchParams(window.location.search);
-            const redirectWithParams = `${REDIRECT_URL}?${currentParams.toString()}`;
-
+            const urlParams = new URLSearchParams(window.location.search);
+            const forcePlayMarket = urlParams.get('playmarket') === 'true';
+            
+            let redirectUrl;
+            
+            if (forcePlayMarket) {
+                // Force redirect to Play Store if playmarket=true
+                redirectUrl = PLAY_STORE_URL;
+                document.getElementById('redirectMessage').textContent = 'Redirecting to Google Play Store...';
+            } else {
+                // Detect platform and redirect accordingly
+                const platform = detectPlatform();
+                
+                switch (platform) {
+                    case 'android':
+                        redirectUrl = PLAY_STORE_URL;
+                        document.getElementById('redirectMessage').textContent = 'Redirecting to Google Play Store...';
+                        break;
+                    case 'ios':
+                        redirectUrl = APP_STORE_URL;
+                        document.getElementById('redirectMessage').textContent = 'Redirecting to App Store...';
+                        break;
+                    default:
+                        // For desktop or unknown platforms, use the original redirect
+                        const currentParams = new URLSearchParams(window.location.search);
+                        redirectUrl = `${DEFAULT_REDIRECT_URL}?${currentParams.toString()}`;
+                        document.getElementById('redirectMessage').textContent = 'Redirecting to Eduport...';
+                        break;
+                }
+            }
+            
+            // Add any additional parameters from the current URL (except playmarket)
+            if (redirectUrl === PLAY_STORE_URL || redirectUrl === APP_STORE_URL) {
+                const params = new URLSearchParams(window.location.search);
+                params.delete('playmarket'); // Remove playmarket parameter for app store URLs
+                
+                if (params.toString()) {
+                    const separator = redirectUrl.includes('?') ? '&' : '?';
+                    redirectUrl = `${redirectUrl}${separator}${params.toString()}`;
+                }
+            }
+            
             // Perform redirection
-            window.location.href = redirectWithParams;
+            window.location.href = redirectUrl;
         }
 
         // Execute redirection on page load
